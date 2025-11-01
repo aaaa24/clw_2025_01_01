@@ -1,5 +1,19 @@
 #include <iostream>
 
+int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
+{
+  int ** table = new int * [rows];
+  size_t i = 0;
+  for (size_t j = 0; j < rows; ++j) {
+    table[j] = new int[lns[j]];
+    for (size_t k = 0; k < lns[j]; ++k) {
+      table[j][k] = t[i];
+      ++i;
+    }
+  }
+  return table;
+}
+
 void destroy(int ** mtx, size_t created)
 {
   for (size_t i = 0; i < created; i++) {
