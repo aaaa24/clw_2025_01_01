@@ -34,7 +34,13 @@ void construct(int ** mtx, int init, size_t rows, size_t cols)
 
 int main()
 {
-  size_t rows = 5, cols = 6;
+  size_t rows = 0, cols = 0;
+  std::cin >> rows >> cols;
+  if (!std::cin) {
+    std::cerr << "bad input\n";
+    return 2;
+  }
+
   int ** matrix = nullptr;
   try {
     matrix = create(rows, cols);
@@ -42,7 +48,9 @@ int main()
     std::cerr << e.what() << "\n";
     return 1;
   }
+
   construct(matrix, 2, rows, cols);
+
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
       std::cout << matrix[i][j];
@@ -50,5 +58,6 @@ int main()
     }
     std::cout << "\n";
   }
+
   destroy(matrix, rows);
 }
