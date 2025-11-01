@@ -1,17 +1,50 @@
 #include <iostream>
 
+int ** convert(const int *, size_t, const size_t *, size_t);
+int ** copy (int **, size_t, size_t);
+void destroy(int **, size_t);
+int ** create(size_t, size_t);
+void construct(int **, int, size_t, size_t);
+void input(int **, size_t, size_t);
+void output(int **, size_t, size_t);
+void convert_testing();
+
 int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
 {
-  int ** table = new int * [rows];
-  size_t i = 0;
-  for (size_t j = 0; j < rows; ++j) {
-    table[j] = new int[lns[j]];
-    for (size_t k = 0; k < lns[j]; ++k) {
-      table[j][k] = t[i];
-      ++i;
+  int ** table;
+  size_t i = 0, j = 0;
+  try {
+    table = new int * [rows];
+    for (; j < rows; ++j) {
+      table[j] = new int[lns[j]];
+      for (size_t k = 0; k < lns[j]; ++k) {
+        table[j][k] = t[i];
+        ++i;
+      }
     }
+  } catch (const std::bad_alloc & e) {
+    destroy(table, j);
+    throw;
   }
   return table;
+}
+
+int ** copy(int ** mtx, size_t rows, size_t cols)
+{
+  size_t i = 0;
+  int ** new_mtx = new int * [rows];
+  try {
+    for (; i < rows; ++i) {
+      new_mtx[i] = new int[cols];
+      for (size_t j; j < cols; ++j) {
+        new_mtx[i][j] = mtx[i][j];
+      }
+    }
+  } catch (const std::bad_alloc & e) {
+    destroy(new_mtx, i);
+    throw;
+  }
+  return new_mtx;
 }
 
 void destroy(int ** mtx, size_t created)
@@ -20,22 +53,6 @@ void destroy(int ** mtx, size_t created)
     delete[] mtx[i];
   }
   delete[] mtx;
-}
-
-void convert_testing() {
-  int t[] = {5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 8};
-  size_t n = 12;
-  size_t lns[] = {4, 2, 5, 1};
-  size_t rows = 4;
-  int ** table = convert(t, n, lns, rows);
-  for (size_t i = 0; i < rows; ++i) {
-    std::cout << table[i][0];
-    for (size_t j = 0; j < lns[i]; ++j) {
-      std::cout << " " << table[i][j];
-    }
-    std::cout << "\n";
-  }
-  destroy(table, rows);
 }
 
 int ** create(size_t rows, size_t cols)
@@ -82,6 +99,22 @@ void output(int ** mtx, size_t rows, size_t cols)
   }
 }
 
+void convert_testing() {
+  int t[] = {5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 8};
+  size_t n = 12;
+  size_t lns[] = {4, 2, 5, 1};
+  size_t rows = 4;
+  int ** table = convert(t, n, lns, rows);
+  for (size_t i = 0; i < rows; ++i) {
+    std::cout << table[i][0];
+    for (size_t j = 0; j < lns[i]; ++j) {
+      std::cout << " " << table[i][j];
+    }
+    std::cout << "\n";
+  }
+  destroy(table, rows);
+}
+
 int main()
 {
   convert_testing();
@@ -110,6 +143,10 @@ int main()
   }
 
   output(matrix, rows, cols);
+
+  int ** copied_matrix = copy(matrix, rows, cols);
+  output(matrix, rows, cols);
+  destroy(copied_matrix, rows);
 
   destroy(matrix, rows);
 }
