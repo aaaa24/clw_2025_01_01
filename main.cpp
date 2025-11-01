@@ -44,9 +44,9 @@ void input(int ** mtx, size_t rows, size_t cols)
 void output(int ** mtx, size_t rows, size_t cols)
 {
   for (size_t i = 0; i < rows; ++i) {
-    for (size_t j = 0; j < cols; ++j) {
-      std::cout << mtx[i][j];
-      if (j != cols - 1) std::cout << " ";
+    std::cout << mtx[i][0];
+    for (size_t j = 1; j < cols; ++j) {
+      std::cout << " " << mtx[i][j];
     }
     std::cout << "\n";
   }
