@@ -34,9 +34,9 @@ int main()
     return 1;
   }
   for (size_t i = 0; i < rows; ++i) {
-    std::cout << matrix[i][0];
-    for (size_t j = 1; j < cols; ++j) {
-      std::cout << " " << matrix[i][j];
+    for (size_t j = 0; j < cols; ++j) {
+      std::cout << matrix[i][j];
+      if (j != cols - 1) std::cout << " ";
     }
     std::cout << "\n";
   }
