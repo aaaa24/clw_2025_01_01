@@ -23,6 +23,15 @@ int ** create(size_t rows, size_t cols)
   return mtx;
 }
 
+void construct(int ** mtx, int init, size_t rows, size_t cols)
+{
+  for (size_t i = 0; i < rows; ++i) {
+    for (size_t j = 0; j < cols; ++j) {
+      mtx[i][j] = init;
+    }
+  }
+}
+
 int main()
 {
   size_t rows = 5, cols = 6;
@@ -33,6 +42,7 @@ int main()
     std::cerr << e.what() << "\n";
     return 1;
   }
+  construct(matrix, 2, rows, cols);
   for (size_t i = 0; i < rows; ++i) {
     for (size_t j = 0; j < cols; ++j) {
       std::cout << matrix[i][j];
