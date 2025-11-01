@@ -41,6 +41,17 @@ void input(int ** mtx, size_t rows, size_t cols)
   }
 }
 
+void output(int ** mtx, size_t rows, size_t cols)
+{
+  for (size_t i = 0; i < rows; ++i) {
+    for (size_t j = 0; j < cols; ++j) {
+      std::cout << mtx[i][j];
+      if (j != cols - 1) std::cout << " ";
+    }
+    std::cout << "\n";
+  }
+}
+
 int main()
 {
   size_t rows = 0, cols = 0;
@@ -58,21 +69,16 @@ int main()
     return 1;
   }
 
-  construct(matrix, 2, rows, cols);
+  construct(matrix, 0, rows, cols);
 
   input(matrix, rows, cols);
   if (!std::cin) {
     std::cerr << "bad input\n";
+    destroy(matrix, rows);
     return 1;
   }
 
-  for (size_t i = 0; i < rows; ++i) {
-    for (size_t j = 0; j < cols; ++j) {
-      std::cout << matrix[i][j];
-      if (j != cols - 1) std::cout << " ";
-    }
-    std::cout << "\n";
-  }
+  output(matrix, rows, cols);
 
   destroy(matrix, rows);
 }
